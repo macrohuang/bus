@@ -23,7 +23,7 @@ public class UnitLimitWrapper extends AbstractLimitWrapper {
 	}
 
 	@Override
-	protected void regiestMethodWithoutAnnotation(Method method, Long value, TimeUnit timeUnit) {
+	protected void regiestMethodWithoutAnnotation(Method method, Long value, TimeUnit timeUnit, boolean async, Long timeout) {
 		LOGGER.info(String.format("Method[%s] regiest with value[%s], timeUnit[%s], ns per request[%s]", method.getName(), value, timeUnit,
 				timeUnit.getNs() / value));
 		unitLimitProcessor.regiest(method, value, timeUnit);

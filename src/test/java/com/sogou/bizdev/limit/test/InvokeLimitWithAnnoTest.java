@@ -51,7 +51,7 @@ public class InvokeLimitWithAnnoTest {
 	@Test
 	public void testSecondLimit() throws SecurityException, NoSuchMethodException, InterruptedException {
 		Method method = myService.getClass().getDeclaredMethod("service4", new Class<?>[] { long.class });
-		int size = 100;
+		int size = 10;
 		long[] ids = new long[size];
 		for (int i = 0; i < size; i++) {
 			ids[i] = (long) (Long.MAX_VALUE * Math.random());
@@ -64,6 +64,40 @@ public class InvokeLimitWithAnnoTest {
 			} catch (InterruptedException e) {
 			} catch (Exception e) {
 				Assert.assertTrue(e instanceof BizdevIncokeLimitationException);
+			}
+		}
+	}
+
+	@Test(expected = BizdevIncokeLimitationException.class)
+	public void testSyncInvokeUntilTimeout() throws SecurityException, NoSuchMethodException, InterruptedException {
+		Method method = myService.getClass().getDeclaredMethod("service5", new Class<?>[] { long.class });
+		while (true) {
+			invokeLimitWrapper.beforeTargetInvokedManual(method, 1L);
+			myService.service5(1L);
+			Thread.sleep((long) (400 * Math.random()));
+		}
+	}
+
+	@Test(expected = BizdevIncokeLimitationException.class)
+	public void testSyncInvoke() throws SecurityException, NoSuchMethodException, InterruptedException {
+		Method method = myService.getClass().getDeclaredMethod("service5", new Class<?>[] { long.class });
+		while (true) {
+			int rand = (int) (100 * Math.random());
+			invokeLimitWrapper.beforeTargetInvokedManual(method, 1L);
+			myService.service5(1L);
+			if (rand % 2 == 0)
+			invokeLimitWrapper.afterTargetInvokedManual(method, 1L);
+		}
+	}
+
+	@Test(expected = BizdevIncokeLimitationException.class)
+	public void testSyncInvokeNoTimeout() throws SecurityException, NoSuchMethodException, InterruptedException {
+		Method method = myService.getClass().getDeclaredMethod("service6", new Class<?>[] { long.class });
+		while (true) {
+			invokeLimitWrapper.beforeTargetInvokedManual(method, 2L);
+			myService.service6(2L);
+			if ((int) (100 * Math.random()) % 2 == 0) {
+				invokeLimitWrapper.afterTargetInvokedManual(method, 2L);
 			}
 		}
 	}

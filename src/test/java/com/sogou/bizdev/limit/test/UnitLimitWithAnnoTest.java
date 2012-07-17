@@ -36,7 +36,7 @@ public class UnitLimitWithAnnoTest {
 		while (true) {
 			unitLimitWrapper.beforeTargetInvokedManual(method);
 			myService.service1();
-			Thread.sleep((long) (1000 * Math.random()));
+			Thread.sleep((long) (10 * Math.random()));
 		}
 	}
 
@@ -46,7 +46,7 @@ public class UnitLimitWithAnnoTest {
 		while (true) {
 			unitLimitWrapper.beforeTargetInvokedManual(method);
 			myService.service2();
-			Thread.sleep((long) (1000 * Math.random()));
+			Thread.sleep((long) (100 * Math.random()));
 		}
 	}
 }

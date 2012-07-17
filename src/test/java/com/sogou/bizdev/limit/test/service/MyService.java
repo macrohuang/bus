@@ -5,7 +5,7 @@ import com.sogou.bizdev.limit.annotation.UnitLimit;
 import com.sogou.bizdev.limit.annotation.UnitLimit.TimeUnit;
 
 public class MyService {
-	@UnitLimit(unit = TimeUnit.SECOND, value = 178767987)
+	@UnitLimit(unit = TimeUnit.SECOND, value = 500)
 	public void service1() {
 		System.out.println("service1");
 	}
@@ -25,11 +25,13 @@ public class MyService {
 		System.out.println("service4:" + uid);
 	}
 
+	@InvokeLimit(unit = TimeUnit.SECOND, value = 100, async = false, timeOut = 100)
 	public void service5(long uid) {
 		System.out.println("service5:" + uid);
 	}
 
-	public void service6() {
+	@InvokeLimit(unit = TimeUnit.SECOND, value = 100, async = false, timeOut = -1)
+	public void service6(long uid) {
 		System.out.println("service6");
 	}
 }

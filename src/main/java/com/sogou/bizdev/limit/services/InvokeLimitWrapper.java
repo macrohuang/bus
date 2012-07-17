@@ -90,6 +90,6 @@ public class InvokeLimitWrapper extends AbstractLimitWrapper {
 		if (!getInit().get()) {
 			init();
 		}
-		invokeLimitProcessor.beforeInvoke(method, key);
+		invokeLimitProcessor.afterReturn(method, key);
 	}
 }

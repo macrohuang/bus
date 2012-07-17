@@ -23,6 +23,8 @@ public abstract class AbstractLimitWrapper {
 	public static final String METHOD_KEY = "method";
 	public static final String LIMIT_KEY = "limitValue";
 	public static final String TIME_UNIT_KEY = "timeUnit";
+	public static final String TIME_OUT_KEY = "timeout";
+	public static final String ASYNC_KEY = "async";
 
 	protected abstract void regiestMethod(Method method);
 
@@ -61,8 +63,13 @@ public abstract class AbstractLimitWrapper {
 									Set<String> regiestMethods = (Set<String>) specifiedMethods.get(className).get(METHOD_KEY);
 									if (regiestMethods.contains(method.getName())) {
 										LOGGER.info("regiest method:" + className + "." + method.getName());
-										regiestMethodWithoutAnnotation(method, (Long) specifiedMethods.get(className).get(LIMIT_KEY),
-												TimeUnit.valueOf(((String) specifiedMethods.get(className).get(TIME_UNIT_KEY)).toUpperCase()));
+										regiestMethodWithoutAnnotation(
+												method,
+												(Long) specifiedMethods.get(className).get(LIMIT_KEY),
+												TimeUnit.valueOf(((String) specifiedMethods.get(className).get(TIME_UNIT_KEY)).toUpperCase()),
+												(specifiedMethods.get(className).get(ASYNC_KEY) == null ? true : (Boolean) specifiedMethods.get(
+														className).get(ASYNC_KEY)), (specifiedMethods.get(className).get(TIME_OUT_KEY) == null ? -1
+														: (Long) specifiedMethods.get(className).get(TIME_OUT_KEY)));
 									}
 								}
 							} catch (ClassNotFoundException e) {

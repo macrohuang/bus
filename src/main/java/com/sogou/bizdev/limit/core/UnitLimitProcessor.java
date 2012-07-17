@@ -9,12 +9,11 @@ import org.apache.log4j.Logger;
 import com.sogou.bizdev.limit.annotation.UnitLimit.TimeUnit;
 import com.sogou.bizdev.limit.constants.ErrorCode;
 import com.sogou.bizdev.limit.exception.BizdevIncokeLimitationException;
+import com.sogou.bizdev.limit.struct.UnitDataStruct;
 
 public final class UnitLimitProcessor {
 
-	// long[0]: 平均请求时间间隔，单位是ns
-	// long[1]: 上一次请求的时间点，ns
-	private static final Map<String, long[]> UNIT_LIMIT_MAP = new ConcurrentHashMap<String, long[]>();
+	private static final Map<String, UnitDataStruct> UNIT_LIMIT_MAP = new ConcurrentHashMap<String, UnitDataStruct>();
 	private static final Logger LOGGER = Logger.getLogger(UnitLimitProcessor.class);
 
 	private static final UnitLimitProcessor INSTANCE = new UnitLimitProcessor();
@@ -27,7 +26,7 @@ public final class UnitLimitProcessor {
 	}
 
 	public boolean regiest(Method method, long limit, TimeUnit timeUnit) {
-		return UNIT_LIMIT_MAP.put(ProcessorHelper.getKey(method), new long[] { timeUnit.getNs() / limit, 0 }) != null;
+		return UNIT_LIMIT_MAP.put(ProcessorHelper.getKey(method), new UnitDataStruct(timeUnit.getNs() / limit, 0l, limit)) != null;
 	}
 
 	public boolean unregiest(Method method) {
@@ -39,14 +38,16 @@ public final class UnitLimitProcessor {
 			LOGGER.error("Method regiest required limit:" + ProcessorHelper.getKey(method));
 			return;
 		}
+		UnitDataStruct dataStruct = UNIT_LIMIT_MAP.get(ProcessorHelper.getKey(method));
 		long currentNs = System.nanoTime();
 		if (LOGGER.isTraceEnabled()) {
-			LOGGER.trace("dif:" + (currentNs  - UNIT_LIMIT_MAP.get(ProcessorHelper.getKey(method))[1]));
+			LOGGER.trace("dif:" + (currentNs - dataStruct.getLastAccessTime()));
 		}
-		if ((currentNs  - UNIT_LIMIT_MAP.get(ProcessorHelper.getKey(method))[1]) < UNIT_LIMIT_MAP.get(ProcessorHelper.getKey(method))[0]) {
-			throw new BizdevIncokeLimitationException(ErrorCode.UnitLimitExceed);
+		if ((currentNs - dataStruct.getLastAccessTime()) < dataStruct.getValue()) {
+			throw new BizdevIncokeLimitationException(ErrorCode.UnitLimitExceed, String.format("方法[%s]在单位时间内已经被调用超过[%s]次，请稍后再调用", method.getName(),
+					dataStruct.getLimit()));
 		} else {
-			UNIT_LIMIT_MAP.get(ProcessorHelper.getKey(method))[1] = currentNs;
+			dataStruct.setLastAccessTime(currentNs);
 		}
 	}
 }
