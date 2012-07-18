@@ -45,6 +45,8 @@ public class UnitLimitWrapper extends AbstractLimitWrapper {
 			init();
 		}
 		MethodSignature methodSignature = (MethodSignature) jp.getSignature();
+		if (methodSignature.getMethod().getAnnotation(UnitLimit.class) == null)
+			return;
 		beforeTargetInvokedManual(methodSignature.getMethod());
 	}
 

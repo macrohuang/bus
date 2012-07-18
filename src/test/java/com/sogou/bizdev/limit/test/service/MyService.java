@@ -18,6 +18,7 @@ public interface MyService {
 	@InvokeLimit(unit = TimeUnit.SECOND, value = 100)
 	public abstract void service4(long uid);
 
+	@UnitLimit(unit = TimeUnit.SECOND, value = 500)
 	@InvokeLimit(unit = TimeUnit.SECOND, value = 100, async = false, timeOut = 100)
 	public abstract void service5(long uid);
 

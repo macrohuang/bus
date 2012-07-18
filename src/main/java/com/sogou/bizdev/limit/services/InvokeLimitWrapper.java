@@ -46,6 +46,8 @@ public class InvokeLimitWrapper extends AbstractLimitWrapper {
 			init();
 		}
 		MethodSignature methodSignature = (MethodSignature) jp.getSignature();
+		if (methodSignature.getMethod().getAnnotation(InvokeLimit.class) == null)
+			return;
 		if (jp.getArgs() == null || jp.getArgs().length < 1) {
 			throw new IllegalArgumentException("Target method required at least one param.");
 		}
@@ -75,6 +77,8 @@ public class InvokeLimitWrapper extends AbstractLimitWrapper {
 			init();
 		}
 		MethodSignature methodSignature = (MethodSignature) jp.getSignature();
+		if (methodSignature.getMethod().getAnnotation(InvokeLimit.class) == null)
+			return;
 		if (jp.getArgs() == null || jp.getArgs().length < 1) {
 			throw new IllegalArgumentException("Target method required at least one param.");
 		}

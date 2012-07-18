@@ -49,6 +49,7 @@ public class MyServiceImpl implements MyService {
 	 * @see com.sogou.bizdev.limit.test.service.impl.MyService#service5(long)
 	 */
 	@Override
+	@UnitLimit(unit = TimeUnit.SECOND, value = 500)
 	@InvokeLimit(unit = TimeUnit.SECOND, value = 100, async = false, timeOut = 100)
 	public void service5(long uid) {
 		System.out.println("service5:" + uid);

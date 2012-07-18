@@ -12,9 +12,9 @@
 	http://www.springframework.org/schema/context/spring-context-2.5.xsd
 	http://www.springframework.org/schema/aop 
 	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
-	<context:component-scan base-package="com.sogou.bizweb" />
+	<!--<context:component-scan base-package="com.sogou.bizweb" />
 	
-	<aop:aspectj-autoproxy />
+	 <aop:aspectj-autoproxy /> -->
 	<!-- <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" /> -->
 	
 	<!-- <aop:config>
@@ -24,4 +24,24 @@
 		</aop:aspect>
 	</aop:config>
 	 -->
+	 
+	 <bean id="myService" class="com.sogou.bizdev.limit.test.service.impl.MyServiceImpl"></bean>
+	 <bean id="unitLimitWrapper" class="com.sogou.bizdev.limit.services.UnitLimitWrapper">
+	 	<property name="packagesToScan" value="com.sogou.bizdev.limit.test.service"/>
+	 </bean>
+	 <bean id="invokeLimitWrapper" class="com.sogou.bizdev.limit.services.InvokeLimitWrapper">
+	 	<property name="packagesToScan" value="com.sogou.bizdev.limit.test.service"/>
+	 </bean>
+	 
+	 <aop:config>
+		<aop:aspect id="unitAspect" ref="unitLimitWrapper">
+			<aop:pointcut id="unitLimitPointcut" expression="execution(* com.sogou.bizdev.limit.test.service.MyService.*(..))" />		
+			<aop:before pointcut-ref="unitLimitPointcut" method="beforeTargetInvoked"/>
+		</aop:aspect>
+		<aop:aspect id="invokeAspect" ref="invokeLimitWrapper">
+			<aop:pointcut id="invokeLimitPointcut" expression="execution(* com.sogou.bizdev.limit.test.service.MyService.*(..))" />		
+			<aop:before pointcut-ref="invokeLimitPointcut" method="beforeTargetInvoked"/>
+			<aop:after pointcut-ref="invokeLimitPointcut" method="afterTargetInvoked"/>
+		</aop:aspect>
+	</aop:config>
 </beans>
