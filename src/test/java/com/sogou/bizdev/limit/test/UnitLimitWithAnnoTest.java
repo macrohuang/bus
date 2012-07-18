@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.sogou.bizdev.limit.exception.BizdevIncokeLimitationException;
 import com.sogou.bizdev.limit.services.UnitLimitWrapper;
 import com.sogou.bizdev.limit.test.service.MyService;
+import com.sogou.bizdev.limit.test.service.impl.MyServiceImpl;
 
 public class UnitLimitWithAnnoTest {
 	UnitLimitWrapper unitLimitWrapper;
@@ -17,7 +18,7 @@ public class UnitLimitWithAnnoTest {
 	@Before
 	public void init() {
 		unitLimitWrapper = new UnitLimitWrapper();
-		myService = new MyService();
+		myService = new MyServiceImpl();
 		unitLimitWrapper.setPackagesToScan(new HashSet<String>() {
 			/**
 			 * 

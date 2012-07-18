@@ -12,6 +12,7 @@ import com.sogou.bizdev.limit.exception.BizdevIncokeLimitationException;
 import com.sogou.bizdev.limit.services.AbstractLimitWrapper;
 import com.sogou.bizdev.limit.services.UnitLimitWrapper;
 import com.sogou.bizdev.limit.test.service.MyService;
+import com.sogou.bizdev.limit.test.service.impl.MyServiceImpl;
 
 public class UnitLimitWithoutAnnoTest {
 	UnitLimitWrapper unitLimitWrapper;
@@ -21,7 +22,7 @@ public class UnitLimitWithoutAnnoTest {
 	@Before
 	public void init() {
 		unitLimitWrapper = new UnitLimitWrapper();
-		myService = new MyService();
+		myService = new MyServiceImpl();
 		unitLimitWrapper.setSpecifiedMethods(new HashMap<String, Map<String, Object>>() {
 			/**
 			 * 
@@ -29,7 +30,7 @@ public class UnitLimitWithoutAnnoTest {
 			private static final long serialVersionUID = 1L;
 
 			{
-				put(MyService.class.getName(), new HashMap<String, Object>() {
+				put(MyServiceImpl.class.getName(), new HashMap<String, Object>() {
 					/**
 					 * 
 					 */

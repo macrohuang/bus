@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.sogou.bizdev.limit.exception.BizdevIncokeLimitationException;
 import com.sogou.bizdev.limit.services.InvokeLimitWrapper;
 import com.sogou.bizdev.limit.test.service.MyService;
+import com.sogou.bizdev.limit.test.service.impl.MyServiceImpl;
 
 public class InvokeLimitWithAnnoTest {
 	class Starter implements Runnable {
@@ -35,7 +36,7 @@ public class InvokeLimitWithAnnoTest {
 	@Before
 	public void init() {
 		invokeLimitWrapper = new InvokeLimitWrapper();
-		myService = new MyService();
+		myService = new MyServiceImpl();
 		invokeLimitWrapper.setPackagesToScan(new HashSet<String>() {
 			/**
 			 * 
