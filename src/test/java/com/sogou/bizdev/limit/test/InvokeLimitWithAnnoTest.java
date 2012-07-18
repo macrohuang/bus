@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.sogou.bizdev.limit.exception.BizdevIncokeLimitationException;
-import com.sogou.bizdev.limit.services.InvokeLimitWrapper;
 import com.sogou.bizdev.limit.test.service.MyService;
 import com.sogou.bizdev.limit.test.service.impl.MyServiceImpl;
+import com.sogou.bizdev.limit.wrapper.InvokeLimitWrapper;
 
 public class InvokeLimitWithAnnoTest {
 	class Starter implements Runnable {
@@ -83,11 +83,8 @@ public class InvokeLimitWithAnnoTest {
 	public void testSyncInvoke() throws SecurityException, NoSuchMethodException, InterruptedException {
 		Method method = myService.getClass().getDeclaredMethod("service5", new Class<?>[] { long.class });
 		while (true) {
-			int rand = (int) (100 * Math.random());
 			invokeLimitWrapper.beforeTargetInvokedManual(method, 1L);
 			myService.service5(1L);
-			if (rand % 2 == 0)
-			invokeLimitWrapper.afterTargetInvokedManual(method, 1L);
 		}
 	}
 
@@ -97,9 +94,6 @@ public class InvokeLimitWithAnnoTest {
 		while (true) {
 			invokeLimitWrapper.beforeTargetInvokedManual(method, 2L);
 			myService.service6(2L);
-			if ((int) (100 * Math.random()) % 2 == 0) {
-				invokeLimitWrapper.afterTargetInvokedManual(method, 2L);
-			}
 		}
 	}
 }

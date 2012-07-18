@@ -9,10 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.sogou.bizdev.limit.exception.BizdevIncokeLimitationException;
-import com.sogou.bizdev.limit.services.AbstractLimitWrapper;
-import com.sogou.bizdev.limit.services.UnitLimitWrapper;
 import com.sogou.bizdev.limit.test.service.MyService;
 import com.sogou.bizdev.limit.test.service.impl.MyServiceImpl;
+import com.sogou.bizdev.limit.wrapper.AbstractLimitWrapper;
+import com.sogou.bizdev.limit.wrapper.UnitLimitWrapper;
 
 public class UnitLimitWithoutAnnoTest {
 	UnitLimitWrapper unitLimitWrapper;

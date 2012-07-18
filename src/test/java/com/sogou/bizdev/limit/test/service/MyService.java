@@ -1,28 +1,29 @@
 package com.sogou.bizdev.limit.test.service;
 
-import com.sogou.bizdev.limit.annotation.InvokeLimit;
-import com.sogou.bizdev.limit.annotation.UnitLimit;
-import com.sogou.bizdev.limit.annotation.UnitLimit.TimeUnit;
+import com.sogou.bizdev.limit.annotation.InvokeeLimitCall;
+import com.sogou.bizdev.limit.annotation.SyncCall;
+import com.sogou.bizdev.limit.annotation.TimeUnitLimitCall;
+import com.sogou.bizdev.limit.annotation.TimeUnitLimitCall.TimeUnit;
 
 public interface MyService {
 
-	@UnitLimit(unit = TimeUnit.SECOND, value = 500)
+	@TimeUnitLimitCall(unit = TimeUnit.SECOND, value = 500)
 	public abstract void service1();
 
-	@UnitLimit(unit = TimeUnit.MINUTE, value = 1000)
+	@TimeUnitLimitCall(unit = TimeUnit.MINUTE, value = 1000)
 	public abstract void service2();
 
-	@UnitLimit(unit = TimeUnit.HOUR, value = 10000000)
+	@TimeUnitLimitCall(unit = TimeUnit.HOUR, value = 10000000)
 	public abstract void service3();
 
-	@InvokeLimit(unit = TimeUnit.SECOND, value = 100)
+	@InvokeeLimitCall(unit = TimeUnit.SECOND, value = 100)
 	public abstract void service4(long uid);
 
-	@UnitLimit(unit = TimeUnit.SECOND, value = 500)
-	@InvokeLimit(unit = TimeUnit.SECOND, value = 100, async = false, timeOut = 100)
+	@TimeUnitLimitCall(unit = TimeUnit.SECOND, value = 500)
+	@InvokeeLimitCall(unit = TimeUnit.SECOND, value = 100)
 	public abstract void service5(long uid);
 
-	@InvokeLimit(unit = TimeUnit.SECOND, value = 100, async = false, timeOut = -1)
+	@SyncCall(timeout = 100)
 	public abstract void service6(long uid);
 
 }

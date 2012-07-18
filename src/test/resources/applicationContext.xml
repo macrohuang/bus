@@ -26,10 +26,13 @@
 	 -->
 	 
 	 <bean id="myService" class="com.sogou.bizdev.limit.test.service.impl.MyServiceImpl"></bean>
-	 <bean id="unitLimitWrapper" class="com.sogou.bizdev.limit.services.UnitLimitWrapper">
+	 <bean id="unitLimitWrapper" class="com.sogou.bizdev.limit.wrapper.UnitLimitWrapper">
 	 	<property name="packagesToScan" value="com.sogou.bizdev.limit.test.service"/>
 	 </bean>
-	 <bean id="invokeLimitWrapper" class="com.sogou.bizdev.limit.services.InvokeLimitWrapper">
+	 <bean id="invokeLimitWrapper" class="com.sogou.bizdev.limit.wrapper.InvokeLimitWrapper">
+	 	<property name="packagesToScan" value="com.sogou.bizdev.limit.test.service"/>
+	 </bean>
+	 <bean id="syncCallWrapper" class="com.sogou.bizdev.limit.wrapper.SyncCallWrapper">
 	 	<property name="packagesToScan" value="com.sogou.bizdev.limit.test.service"/>
 	 </bean>
 	 
@@ -41,7 +44,11 @@
 		<aop:aspect id="invokeAspect" ref="invokeLimitWrapper">
 			<aop:pointcut id="invokeLimitPointcut" expression="execution(* com.sogou.bizdev.limit.test.service.MyService.*(..))" />		
 			<aop:before pointcut-ref="invokeLimitPointcut" method="beforeTargetInvoked"/>
-			<aop:after pointcut-ref="invokeLimitPointcut" method="afterTargetInvoked"/>
+		</aop:aspect>
+		<aop:aspect id="syncAspect" ref="syncCallWrapper">
+			<aop:pointcut id="syncPointcut" expression="execution(* com.sogou.bizdev.limit.test.service.MyService.*(..))" />		
+			<aop:before pointcut-ref="syncPointcut" method="beforeTargetInvoked"/>
+			<aop:after pointcut-ref="syncPointcut" method="afterTargetInvoked"/>
 		</aop:aspect>
 	</aop:config>
 </beans>
