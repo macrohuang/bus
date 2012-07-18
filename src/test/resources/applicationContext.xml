@@ -12,41 +12,29 @@
 	http://www.springframework.org/schema/context/spring-context-2.5.xsd
 	http://www.springframework.org/schema/aop 
 	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
-	<!--<context:component-scan base-package="com.sogou.bizweb" />
-	
-	 <aop:aspectj-autoproxy /> -->
-	<!-- <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" /> -->
-	
-	<!-- <aop:config>
-		<aop:aspect id="aspect" ref="thirdAspect">
-			<aop:pointcut id="firstPointcut" expression="execution(* com.sogou.bizweb.services.FirstService.*(..))" />		
-			<aop:around pointcut-ref="firstPointcut" method="after"/>
-		</aop:aspect>
-	</aop:config>
-	 -->
 	 
-	 <bean id="myService" class="com.sogou.bizdev.limit.test.service.impl.MyServiceImpl"></bean>
-	 <bean id="unitLimitWrapper" class="com.sogou.bizdev.limit.wrapper.UnitLimitWrapper">
-	 	<property name="packagesToScan" value="com.sogou.bizdev.limit.test.service"/>
+	 <bean id="myService" class="github.macrohuang.limit.test.service.impl.MyServiceImpl"></bean>
+	 <bean id="unitLimitWrapper" class="github.macrohuang.limit.wrapper.UnitLimitWrapper">
+	 	<property name="packagesToScan" value="github.macrohuang.limit.test.service"/>
 	 </bean>
-	 <bean id="invokeLimitWrapper" class="com.sogou.bizdev.limit.wrapper.InvokeLimitWrapper">
-	 	<property name="packagesToScan" value="com.sogou.bizdev.limit.test.service"/>
+	 <bean id="invokeLimitWrapper" class="github.macrohuang.limit.wrapper.InvokeLimitWrapper">
+	 	<property name="packagesToScan" value="github.macrohuang.limit.test.service"/>
 	 </bean>
-	 <bean id="syncCallWrapper" class="com.sogou.bizdev.limit.wrapper.SyncCallWrapper">
-	 	<property name="packagesToScan" value="com.sogou.bizdev.limit.test.service"/>
+	 <bean id="syncCallWrapper" class="github.macrohuang.limit.wrapper.SyncCallWrapper">
+	 	<property name="packagesToScan" value="github.macrohuang.limit.test.service"/>
 	 </bean>
 	 
 	 <aop:config>
 		<aop:aspect id="unitAspect" ref="unitLimitWrapper">
-			<aop:pointcut id="unitLimitPointcut" expression="execution(* com.sogou.bizdev.limit.test.service.MyService.*(..))" />		
+			<aop:pointcut id="unitLimitPointcut" expression="execution(* github.macrohuang.limit.test.service.MyService.*(..))" />		
 			<aop:before pointcut-ref="unitLimitPointcut" method="beforeTargetInvoked"/>
 		</aop:aspect>
 		<aop:aspect id="invokeAspect" ref="invokeLimitWrapper">
-			<aop:pointcut id="invokeLimitPointcut" expression="execution(* com.sogou.bizdev.limit.test.service.MyService.*(..))" />		
+			<aop:pointcut id="invokeLimitPointcut" expression="execution(* github.macrohuang.limit.test.service.MyService.*(..))" />		
 			<aop:before pointcut-ref="invokeLimitPointcut" method="beforeTargetInvoked"/>
 		</aop:aspect>
 		<aop:aspect id="syncAspect" ref="syncCallWrapper">
-			<aop:pointcut id="syncPointcut" expression="execution(* com.sogou.bizdev.limit.test.service.MyService.*(..))" />		
+			<aop:pointcut id="syncPointcut" expression="execution(* github.macrohuang.limit.test.service.MyService.*(..))" />		
 			<aop:before pointcut-ref="syncPointcut" method="beforeTargetInvoked"/>
 			<aop:after pointcut-ref="syncPointcut" method="afterTargetInvoked"/>
 		</aop:aspect>
